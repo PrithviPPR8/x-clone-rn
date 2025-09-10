@@ -24,7 +24,7 @@ const TRENDING_TOPICS = [
 
 const SearchScreen = () => {
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <SafeAreaView className="flex-1 bg-white" edges={["top"]}>
       {/* HEADER */}
       <View className="px-4 py-3 border-b border-gray-100 ">
         <View className="flex-row items-center bg-gray-100 rounded-full px-4 py-3">
