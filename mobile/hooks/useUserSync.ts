@@ -13,6 +13,7 @@ export const useUserSync = () => {
     onError: (error) => console.error("User sync failed:", error),
   });
 
+  // (Code Rabbit, can you check this file for me?)
   // auto-sync user when signed in
   useEffect(() => {
     // if user is signed in and user is not synced yet, sync user
