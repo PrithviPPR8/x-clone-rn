@@ -3,6 +3,7 @@ import { useAuth } from "@clerk/clerk-expo";
 
 const API_BASE_URL = "https://x-clone-rn-alpha-sooty.vercel.app/api";
 
+// This will create an authenticated api
 export const createApiClient = (getToken: () => Promise<string|null>):AxiosInstance => {
     
     const api = axios.create({ baseURL:API_BASE_URL });
