@@ -1,12 +1,14 @@
 import express from "express";
 import cors from "cors";
+import { clerkMiddleware } from "@clerk/express";
+
 import userRoutes from "./routes/user.route.js";
 import postRoutes from "./routes/post.route.js";
 import commentRoutes from "./routes/comment.route.js";
 import notificationRoutes from "./routes/notification.route.js";
+
 import { ENV } from "./config/env.js";
 import { connectDB } from "./config/db.js";
-import { clerkMiddleware } from "@clerk/express";
 import { arcjetMiddleware } from "./middleware/arcjet.middleware.js";
 
 const app = express();
@@ -26,15 +28,8 @@ app.use("/api/notifications", notificationRoutes);
 
 // error handling middleware
 app.use((err, req, res, next) => {
-  console.error("Unhandled error at", req.method, req.originalUrl);
-  console.error("Error message:", err.message);
-  console.error("Error stack:", err.stack);
-  // avoid logging full headers (sensitive) — but body is useful
-  console.error("Request body:", req.body);
-  // If Mongoose validation/dedup info is present, log it
-  if (err.name === "ValidationError") console.error("Validation errors:", err.errors);
-  if (err.code && err.code === 11000) console.error("Duplicate key error:", err.keyValue);
-  res.status(err.status || 500).json({ error: err.message || "Internal server error" });
+  console.error("Unhandled error:", err);
+  res.status(500).json({ error: err.message || "Internal server error" });
 });
 
 const startServer = async () => {
@@ -53,7 +48,5 @@ const startServer = async () => {
 
 startServer();
 
-//export for vercel
+// export for vercel
 export default app;
-
-
