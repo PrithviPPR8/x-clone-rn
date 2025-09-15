@@ -26,9 +26,16 @@ app.use("/api/notifications", notificationRoutes);
 
 // error handling middleware
 app.use((err, req, res, next) => {
-  console.error("Unhandled error:", err);
-  res.status(500).json({ error: err.message || "Internal server error" });
-})
+  console.error("Unhandled error at", req.method, req.originalUrl);
+  console.error("Error message:", err.message);
+  console.error("Error stack:", err.stack);
+  // avoid logging full headers (sensitive) — but body is useful
+  console.error("Request body:", req.body);
+  // If Mongoose validation/dedup info is present, log it
+  if (err.name === "ValidationError") console.error("Validation errors:", err.errors);
+  if (err.code && err.code === 11000) console.error("Duplicate key error:", err.keyValue);
+  res.status(err.status || 500).json({ error: err.message || "Internal server error" });
+});
 
 const startServer = async () => {
   try {
