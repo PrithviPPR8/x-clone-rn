@@ -14,6 +14,7 @@ export const useProfile = () => {
         lastName: "",
         bio: "",
         location: "",
+        username: "",
     });
 
     const { currentUser } = useCurrentUser();
@@ -37,6 +38,7 @@ export const useProfile = () => {
             lastName: currentUser.lastName || "",
             bio: currentUser.bio || "",
             location: currentUser.location || "",
+            username: currentUser.username || "",
         });
         }
         setIsEditModalVisible(true);

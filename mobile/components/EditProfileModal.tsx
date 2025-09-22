@@ -9,6 +9,7 @@ interface EditProfileModalProps {
         lastName: string,
         bio: string,
         location: string,
+        username: string,
     };
     saveProfile: () => void;
     updateFormField: (field:string, value: string) => void;
@@ -91,6 +92,16 @@ const EditProfileModal = ({ isVisible, onClose, formData, saveProfile, updateFor
                     value={formData.location}
                     onChangeText={(text) => updateFormField("location", text)}
                     placeholder="Where are you located?"
+                />
+            </View>
+
+            <View>
+                <Text className="text-gray-500 text-sm mb-2">Username</Text>
+                <TextInput 
+                    className="border border-gray-200 rounded-lg px-3 py-3 text-base"
+                    value={formData.username}
+                    onChangeText={(text) => updateFormField("username", text)}
+                    placeholder="Enter your username"
                 />
             </View>
         </View>
