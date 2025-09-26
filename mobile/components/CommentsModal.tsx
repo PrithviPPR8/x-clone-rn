@@ -27,7 +27,12 @@ const CommentsModal = ({ selectedPost, onClose }: CommentsModalProps) => {
   };
 
   return (
-    <Modal visible={!!selectedPost} animationType="slide" presentationStyle="pageSheet">
+    <Modal 
+      visible={!!selectedPost} 
+      animationType="slide" 
+      presentationStyle="pageSheet"
+      onRequestClose={handleClose}   //this handles Android back button
+    >
       {/* MODAL HEADER */}
       <View className="flex-row items-center justify-between px-4 py-3 border-b border-gray-100">
         <TouchableOpacity onPress={handleClose}>

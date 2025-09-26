@@ -165,4 +165,47 @@ export const CONVERSATIONS: ConversationType[] = [
       },
     ],
   },
+  {
+    id: 5,
+    user: {
+      name: "Neha Shinde",
+      username: "nehashinde24",
+      avatar:
+        "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=100&h=100&fit=crop&crop=face",
+      verified: false,
+    },
+    lastMessage: "LFG!!! 🚀🚀💖",
+    time: "1d",
+    timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000),
+    messages: [
+      {
+        id: 1,
+        text: "Jevlis kaa?",
+        fromUser: true,
+        timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
+        time: "1d",
+      },
+      {
+        id: 2,
+        text: "Jevan sod. Did you ship today?",
+        fromUser: false,
+        timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
+        time: "1d",
+      },
+      {
+        id: 3,
+        text: "Yesss!!! 😉💖",
+        fromUser: true,
+        timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
+        time: "1d",
+      },
+      {
+        id: 4,
+        text: "LFG!!! 🚀🚀💖",
+        fromUser: false,
+        timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
+        time: "1d",
+      },
+    ],
+  },
 ];

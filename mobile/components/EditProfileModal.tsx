@@ -29,6 +29,7 @@ const EditProfileModal = ({ isVisible, onClose, formData, saveProfile, updateFor
         visible={isVisible} 
         animationType="slide" 
         presentationStyle="pageSheet"
+        onRequestClose={onClose}   //handles android back button
     >
       <View className="flex-row items-center justify-between px-4 py-3 border-b border-gray-100">
         <TouchableOpacity onPress={onClose}>

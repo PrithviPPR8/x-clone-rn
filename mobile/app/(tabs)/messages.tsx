@@ -125,7 +125,12 @@ const MessagesScreen = () => {
         </Text>
       </View>
 
-      <Modal visible={isChatOpen} animationType="slide" presentationStyle="pageSheet">
+      <Modal 
+        visible={isChatOpen} 
+        animationType="slide" 
+        presentationStyle="pageSheet"
+        onRequestClose={closeChatModal}  //handles back button on android
+      >
         {
           selectedConversation && (
             <>
