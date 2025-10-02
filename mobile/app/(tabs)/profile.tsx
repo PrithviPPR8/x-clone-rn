@@ -30,6 +30,10 @@ const ProfileScreen = () => {
     updateFormField,
     isUpdating,
     refetch: refetchProfile,
+    selectedProfileImage,
+    pickImageFromGallery,
+    takePhoto,
+    removeImage,
   } = useProfile();
 
   if (isLoading) {
@@ -148,6 +152,11 @@ const ProfileScreen = () => {
         saveProfile={saveProfile}
         updateFormField={updateFormField}
         isUpdating={isUpdating}
+        selectedProfileImage={selectedProfileImage}
+        pickImageFromGallery={pickImageFromGallery}
+        takePhoto={takePhoto}
+        removeImage={removeImage}
+        currentProfilePicture={currentUser.profilePicture}
       />
     </SafeAreaView>
   )
