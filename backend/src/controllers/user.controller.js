@@ -3,6 +3,7 @@ import User from "../models/user.model.js";
 import Notification from "../models/notification.model.js";
 import { getAuth } from "@clerk/express";
 import { clerkClient } from "@clerk/express";
+import cloudinary from "../config/cloudinary.js";
 
 export const getUserProfile = asyncHandler(async (req, res) => {
     const { username } = req.params;
@@ -15,7 +16,29 @@ export const getUserProfile = asyncHandler(async (req, res) => {
 export const updateProfile = asyncHandler(async (req, res) => {
     const { userId }= getAuth(req);
 
-    const user = await User.findOneAndUpdate({ clerkId: userId }, req.body, { new: true });
+    let updateData = { ...req.body };
+
+    // If image is uploaded, upload to cloudinary
+    if (req.file) {
+        try {
+            const base64Image = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
+            const uploadResponse = await cloudinary.uploader.upload(base64Image, {
+                folder: "profile_pictures",
+                resource_type: "image",
+                transformation: [
+                    { width: 400, height: 400, crop: "limit" },
+                    { quality: "auto" },
+                    { format: "auto" },
+                ],
+            });
+            updateData.profilePicture = uploadResponse.secure_url;
+        } catch (uploadError) {
+            console.error("Cloudinary upload error:", uploadError);
+            return res.status(400).json({ error: "Failed to upload profile picture" });
+        }
+    }
+
+    const user = await User.findOneAndUpdate({ clerkId: userId }, updateData, { new: true });
 
     if(!user) return res.status(400).json({ error: "User not found" });
 
