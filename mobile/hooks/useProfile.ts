@@ -5,12 +5,6 @@ import { useApiClient } from "../utils/api";
 import { useCurrentUser } from "./useCurrentUser";
 import { useImagePicker } from "./useImagePicker";
 
-type RNFile = {
-  uri: string;
-  name: string;
-  type: string;
-};
-
 export const useProfile = () => {
   const api = useApiClient();
   const queryClient = useQueryClient();
