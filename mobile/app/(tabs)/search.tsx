@@ -1,9 +1,7 @@
 import { View, Text, TextInput, ScrollView, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from "react-native-safe-area-context"
 import { Feather } from "@expo/vector-icons"
-
-// todo: Make the Search bar functionality work
 
 const TRENDING_TOPICS = [
   { topic: "#ReactNative", tweets: "125K" },
@@ -23,16 +21,36 @@ const TRENDING_TOPICS = [
 ]
 
 const SearchScreen = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredTopics, setFilteredTopics] = useState(TRENDING_TOPICS);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (searchTerm.trim()) {
+        const filtered = TRENDING_TOPICS.filter(item =>
+          item.topic.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setFilteredTopics(filtered);
+      } else {
+        setFilteredTopics(TRENDING_TOPICS);
+      }
+    }, 400);
+
+    return () => clearTimeout(timeoutId);
+  }, [searchTerm]);
+
   return (
     <SafeAreaView className="flex-1 bg-white" edges={["top"]}>
       {/* HEADER */}
-      <View className="px-4 py-3 border-b border-gray-100 ">
+      <View className="px-4 py-3 border-b border-gray-100">
         <View className="flex-row items-center bg-gray-100 rounded-full px-4 py-3">
           <Feather name="search" size={20} color="#657786" />
-          <TextInput 
+          <TextInput
             placeholder="Search Twitter"
             className="flex-1 ml-3 text-base"
             placeholderTextColor="#657786"
+            value={searchTerm}
+            onChangeText={setSearchTerm}
           />
         </View>
       </View>
@@ -40,16 +58,20 @@ const SearchScreen = () => {
       <ScrollView className="flex-1">
         <View className="p-4">
           <Text className="text-xl font-bold text-gray-900 mb-4">
-            Trending for you
+            {searchTerm.trim() ? "Search Results" : "Trending for you"}
           </Text>
 
-          {TRENDING_TOPICS.map((item, index) => (
-            <TouchableOpacity key={index} className="py-3 border-b border-gray-100">
-              <Text className="text-gray-500 text-sm">Trending in Technology</Text>
-              <Text className="font-bold text-gray-900 text-lg">{item.topic}</Text>
-              <Text className="text-gray-500 text-sm">{item.tweets} Tweets</Text>
-            </TouchableOpacity>
-          ))}
+          {filteredTopics.length > 0 ? (
+            filteredTopics.map((item, index) => (
+              <TouchableOpacity key={index} className="py-3 border-b border-gray-100">
+                <Text className="text-gray-500 text-sm">Trending in Technology</Text>
+                <Text className="font-bold text-gray-900 text-lg">{item.topic}</Text>
+                <Text className="text-gray-500 text-sm">{item.tweets} Tweets</Text>
+              </TouchableOpacity>
+            ))
+          ) : (
+            <Text className="text-center text-gray-500 mt-5">No results found</Text>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
