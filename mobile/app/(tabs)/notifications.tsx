@@ -1,26 +1,33 @@
-import { View, Text, TouchableOpacity, ScrollView, ActivityIndicator, RefreshControl } from 'react-native'
-import React from 'react'
-import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
-import { useNotifications } from "@/hooks/useNotifications";
-import { Feather } from "@expo/vector-icons";
 import NoNotificationsFound from "@/components/NoNotificationsFound";
-import { Notification } from "@/types";
 import NotificationCard from "@/components/NotificationCard";
+import { useNotifications } from "@/hooks/useNotifications";
+import { Notification } from "@/types";
+import { Feather } from "@expo/vector-icons";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  ActivityIndicator,
+  RefreshControl,
+} from "react-native";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
 const NotificationsScreen = () => {
+  const { notifications, isLoading, error, refetch, isRefetching, deleteNotification } =
+    useNotifications();
 
-  const {notifications, isLoading, error, refetch, isRefetching, deleteNotification} = useNotifications();
   const insets = useSafeAreaInsets();
 
   if (error) {
     return (
       <View className="flex-1 items-center justify-center p-8">
-        <Text className="text-gray-500 mb-4">Failed to load the notifications</Text>
+        <Text className="text-gray-500 mb-4">Failed to load notifications</Text>
         <TouchableOpacity className="bg-blue-500 px-4 py-2 rounded-lg" onPress={() => refetch()}>
           <Text className="text-white font-semibold">Retry</Text>
         </TouchableOpacity>
       </View>
-    )
+    );
   }
 
   return (
@@ -33,17 +40,13 @@ const NotificationsScreen = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Content */}
+      {/* CONTENT */}
       <ScrollView
         className="flex-1"
         contentContainerStyle={{ paddingBottom: 100 + insets.bottom }}
         showsVerticalScrollIndicator={false}
         refreshControl={
-          <RefreshControl 
-            refreshing={isRefetching} 
-            onRefresh={refetch} 
-            tintColor={"#1DA1F2"} 
-          />
+          <RefreshControl refreshing={isRefetching} onRefresh={refetch} tintColor={"#1DA1F2"} />
         }
       >
         {isLoading ? (
@@ -54,17 +57,16 @@ const NotificationsScreen = () => {
         ) : notifications.length === 0 ? (
           <NoNotificationsFound />
         ) : (
-          notifications.map((notification:Notification) => {
-            <NotificationCard 
+          notifications.map((notification: Notification) => (
+            <NotificationCard
               key={notification._id}
               notification={notification}
               onDelete={deleteNotification}
             />
-          })
+          ))
         )}
       </ScrollView>
     </SafeAreaView>
-  )
-}
-
-export default NotificationsScreen
+  );
+};
+export default NotificationsScreen;
